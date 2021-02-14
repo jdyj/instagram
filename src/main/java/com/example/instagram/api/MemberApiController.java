@@ -2,7 +2,9 @@ package com.example.instagram.api;
 
 import com.example.instagram.domain.Gender;
 import com.example.instagram.domain.Member;
+import com.example.instagram.service.MemberService;
 import com.example.instagram.service.MemberServiceImpl;
+import io.swagger.annotations.Api;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class MemberApiController {
 
-    private final MemberServiceImpl memberService;
+    private final MemberService memberService;
 
     /**
      * 문제점
@@ -35,7 +37,7 @@ public class MemberApiController {
 
     // 항상 엔티티를 외부에 노출시키지 말고 꼭 DTO 만들기 !!!
     @GetMapping("/api/v2/members")
-    public Result MemberV2() {
+    public Result memberV2() {
         List<Member> findMembers = memberService.findMembers();
         List<MemberDto> collect = findMembers.stream()
                 .map(m -> new MemberDto(m.getUsername()))
@@ -43,6 +45,19 @@ public class MemberApiController {
 
         return new Result(collect.size(),collect);
     }
+
+    @PostMapping("/signUp/v1/members")
+    public SignUpMemberResponse memberSignUpV1(@RequestBody @Valid SignUpMemberRequest request) {
+        Member member = new Member();
+        member.setUsername(request.getName());
+        member.setAge(request.getAge());
+        member.setEmail(request.getEmail());
+        member.setGender(request.getGender());
+        member.setPassword(request.getPassword());
+        Long id = memberService.join(member);
+        return new SignUpMemberResponse(id);
+    }
+
 
     @Data
     @AllArgsConstructor
@@ -119,4 +134,19 @@ public class MemberApiController {
         }
     }
 
+
+    @Data
+    static class SignUpMemberRequest {
+        private String email;
+        private String password;
+        private String name;
+        private int age;
+        private Gender gender;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class SignUpMemberResponse {
+        private Long id;
+    }
 }

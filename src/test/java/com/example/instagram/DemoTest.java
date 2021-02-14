@@ -20,7 +20,6 @@ public class DemoTest {
 
     @Test
     @Transactional
-    @Rollback(false)
     public void test1() {
         Member member = new Member();
         Board board = new Board();

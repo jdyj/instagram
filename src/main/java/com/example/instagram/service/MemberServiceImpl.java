@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl {
+public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
 
@@ -30,7 +30,7 @@ public class MemberServiceImpl {
         List<Member> findMembers =
             memberRepository.findByName(member.getUsername());
 
-        if(!findMembers.isEmpty()) {
+        if(findMembers.size() > 0) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
     }
