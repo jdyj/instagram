@@ -24,29 +24,8 @@ public class MemberApiController {
 
     private final MemberService memberService;
 
-    /**
-     * 문제점
-     * 엔티티에 프레젠테이션 계층을 위한 로직이 추가
-     * 기본적으로 엔티티의 모든 값이 노출
-     * 응답 스펙을 맞추기 위해 로직이 추가(@JsonIgnore, 별도의 뷰 로직 등)
-     */
-    @GetMapping("/api/v1/members")
-    public List<Member> membersV1() {
-        return memberService.findMembers();
-    }
-
-    // 항상 엔티티를 외부에 노출시키지 말고 꼭 DTO 만들기 !!!
-    @GetMapping("/api/v2/members")
-    public Result memberV2() {
-        List<Member> findMembers = memberService.findMembers();
-        List<MemberDto> collect = findMembers.stream()
-                .map(m -> new MemberDto(m.getUsername()))
-                .collect(Collectors.toList());
-
-        return new Result(collect.size(),collect);
-    }
-
-    @PostMapping("/signUp/v1/members")
+    //회원 가입
+    @PostMapping("/signUp/v1/member")
     public SignUpMemberResponse memberSignUpV1(@RequestBody @Valid SignUpMemberRequest request) {
         Member member = new Member();
         member.setUsername(request.getName());
@@ -58,6 +37,25 @@ public class MemberApiController {
         return new SignUpMemberResponse(id);
     }
 
+    //로그인
+    @PostMapping("/signIn/v1/member")
+    public SignInMemberResponse memberSignInV1(@RequestBody @Valid SignInMemberRequest request) {
+        Member member = memberService.signIn(request.getEmail(), request.getPassword());
+        return new SignInMemberResponse(member.getId());
+    }
+
+    @Data
+    static class SignInMemberRequest {
+        private String email;
+        private String password;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class SignInMemberResponse {
+        private Long memberId;
+    }
+
 
     @Data
     @AllArgsConstructor
@@ -66,30 +64,10 @@ public class MemberApiController {
         private T data;
     }
 
-    @Data
-    @AllArgsConstructor
-    static class MemberDto {
-        private String name;
-    }
-
-    @PostMapping("/api/v1/members")
-    public CreateMemberResponse saveMemberV1(@RequestBody @Valid Member member) {
-        Long id = memberService.join(member);
-        return new CreateMemberResponse(id);
-    }
 
     /**
      * 등록 V2 : 요청 값으로 Member 엔티티 대신 별도의 DTO를 받는다.
      */
-    @PostMapping("/api/v2/members")
-    public CreateMemberResponse saveMemberV2(@RequestBody @Valid CreateMemberRequest request) {
-        Member member = new Member();
-        member.setUsername(request.getName());
-
-        Long id = memberService.join(member);
-        return new CreateMemberResponse(id);
-    }
-
     @PutMapping("/api/v2/members/{id}")
     public UpdateMemberResponse updateMemberV2(
             @PathVariable("id") Long id,
@@ -120,25 +98,12 @@ public class MemberApiController {
 
 
     @Data
-    static class CreateMemberRequest {
-        @NotEmpty
-        private String name;
-    }
-
-    @Data
-    static class CreateMemberResponse {
-        private Long id;
-
-        public CreateMemberResponse(Long id) {
-            this.id = id;
-        }
-    }
-
-
-    @Data
     static class SignUpMemberRequest {
+        @NotEmpty
         private String email;
+        @NotEmpty
         private String password;
+        @NotEmpty
         private String name;
         private int age;
         private Gender gender;

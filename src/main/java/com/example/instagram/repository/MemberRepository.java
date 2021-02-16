@@ -28,9 +28,16 @@ public class MemberRepository {
 
     }
 
-    public List<Member> findByName(String name) {
-        return em.createQuery("select m from Member m where m.username = :username", Member.class)
-                .setParameter("username", name)
+    public List<Member> findByEmail(String email) {
+        return em.createQuery("select m from Member m where m.email = :email", Member.class)
+                .setParameter("email", email)
+                .getResultList();
+    }
+
+    public List<Member> findByEmailAndPassword(String email, String password) {
+        return em.createQuery("select m from Member m where m.email = :email and m.password = :password", Member.class)
+                .setParameter("email", email)
+                .setParameter("password", password)
                 .getResultList();
     }
 }

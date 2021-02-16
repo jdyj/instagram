@@ -2,7 +2,9 @@ package com.example.instagram.api;
 
 
 import com.example.instagram.domain.Board;
+import com.example.instagram.service.BoardService;
 import com.example.instagram.service.BoardServiceImpl;
+import com.example.instagram.service.MemberService;
 import com.example.instagram.service.MemberServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,9 +19,9 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class BoardApiController {
 
-    private final BoardServiceImpl boardService;
+    private final BoardService boardService;
 
-    private final MemberServiceImpl memberService;
+    private final MemberService memberService;
 
     @PostMapping("/api/v2/boards")
     public CreateBoardResponse make(
@@ -28,14 +30,14 @@ public class BoardApiController {
         board.setHeartCount(request.getHeartCount());
         board.setContext(request.getContext());
         board.setMember(memberService.findOne(request.getMemberId()));
-        Long id = boardService.make(board);
-        return new CreateBoardResponse(id);
+        Long boardId = boardService.make(board);
+        return new CreateBoardResponse(boardId);
     }
 
     @Data
     @AllArgsConstructor
     static class CreateBoardResponse {
-        private Long id;
+        private Long boardId;
     }
 
     @Data

@@ -17,4 +17,6 @@ public interface MemberService {
     Member findOne(Long memberId);
 
     void update(Long id, String name);
+
+    Member signIn(String email, String password);
 }

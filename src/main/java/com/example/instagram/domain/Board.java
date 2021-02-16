@@ -20,4 +20,9 @@ public class Board {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    //==비즈니스 로직==//
+    public int addHeartCount() {
+        return this.heartCount += 1;
+    }
 }

@@ -24,6 +24,8 @@ public class Member {
 
     private String password;
 
+
+
     private int age;
 
     @Enumerated(EnumType.STRING)

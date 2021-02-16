@@ -17,3 +17,35 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.type : trace
+
+
+#facebook:
+#  client:
+#    clientId: clientIdTest
+#    clientSecret: clientSecretTest
+#    accessTokenUri: https://graph.facebook.com/oauth/access_token
+#    userAuthorizationUri: https://www.facebook.com/dialog/oauth?display=popup
+#    tokenName: oauth_token
+#    authenticationScheme: query
+#    clientAuthenticationScheme: form
+#    scope: email
+#  resource:
+#    userInfoUri: https://graph.facebook.com/me?fiels=id,name,email,link
+#
+#google:
+#  client:
+#    clientId: clientIdTest
+#    clientSecret: clientSecretTest
+#    accessTokenUri: https://accounts.google.com/o/oauth2/token
+#    userAuthorizationUri: https://accounts.google.com/o/oauth2/auth
+#    scope: email, profile
+#  resource:
+#    userInfoUri: https://www.googleapis.com/oauth2/v2/userinfo
+#
+#kakao:
+#  client:
+#    clientId: clientIdTest
+#    accessTokenUri: https://kauth.kakao.com/oauth/token
+#    userAuthorizationUri: https://kauth.kakao.com/oauth/authorize
+#  resource:
+#    userInfoUri: https://kapi.kakao.com/v1/user/me
