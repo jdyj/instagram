@@ -37,6 +37,27 @@ public class MemberApiController {
         return new SignUpMemberResponse(id);
     }
 
+    @GetMapping("/find/v1/member/{id}")
+/*
+    @GetMapping("/api/v1/members")
+    public Result membersV1() {
+        List<Member> findMembers = memberService.findMembers();
+
+        List<MemberDto> collect = findMembers.stream()
+                .map(member -> new MemberDto(member.getUsername(), member.getEmail(), member.getGender(), member.getPassword()))
+                .collect(Collectors.toList());
+        return new Result(collect);
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class MemberDto {
+        private String name;
+        private String email;
+        private Gender gender;
+        private String password;
+    }
+*/
     //로그인
     @PostMapping("/signIn/v1/member")
     public SignInMemberResponse memberSignInV1(@RequestBody @Valid SignInMemberRequest request) {
@@ -60,7 +81,6 @@ public class MemberApiController {
     @Data
     @AllArgsConstructor
     static class Result<T> {
-        private int count;
         private T data;
     }
 
@@ -76,6 +96,12 @@ public class MemberApiController {
         memberService.update(id,request.getName());
         Member findMember = memberService.findOne(id);
         return new UpdateMemberResponse(findMember.getId(),findMember.getUsername());
+    }
+
+    @Data
+    static class FindOtherMemberRequest {
+        private String name;
+        private int age;
     }
 
     @Data

@@ -5,12 +5,13 @@ import com.example.instagram.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
@@ -47,6 +48,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 이렇게 해도 될련지 모르겠네..
+    // 쿠키 세션 토큰
     public Member signIn(String email, String password) {
         List<Member> findMembers = memberRepository.findByEmailAndPassword(email, password);
         if(findMembers.size() == 0) {

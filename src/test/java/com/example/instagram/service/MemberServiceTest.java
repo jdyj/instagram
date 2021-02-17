@@ -17,12 +17,12 @@ class MemberServiceTest {
 
     @Test
     @Transactional
-    public void 중복회원검증() throws Exception {
+    public void 중복이메일검증() throws Exception {
         //given
         Member member1 = new Member();
         Member member2 = new Member();
-        member1.setUsername("userA");
-        member2.setUsername("userA");
+        member1.setEmail("jdyj@naver.com");
+        member2.setEmail("jdyj@naver.com");
 
         //when
         memberService.join(member1);
