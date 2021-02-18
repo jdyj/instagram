@@ -24,7 +24,7 @@ public class Member {
 
     private String password;
 
-
+    private String comment;
 
     private int age;
 

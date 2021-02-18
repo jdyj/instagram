@@ -37,7 +37,12 @@ public class MemberApiController {
         return new SignUpMemberResponse(id);
     }
 
-    @GetMapping("/find/v1/member/{id}")
+    @GetMapping("/find/member/{id}")
+    public FindOtherMemberResponse findOtherMember(@PathVariable("id") Long id) {
+        Member member = memberService.findOne(id);
+        return new FindOtherMemberResponse(member.getUsername(), member.getComment(), member.getAge());
+    }
+
 /*
     @GetMapping("/api/v1/members")
     public Result membersV1() {
@@ -56,6 +61,12 @@ public class MemberApiController {
         private String email;
         private Gender gender;
         private String password;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class Result<T> {
+        private T data;
     }
 */
     //로그인
@@ -78,11 +89,7 @@ public class MemberApiController {
     }
 
 
-    @Data
-    @AllArgsConstructor
-    static class Result<T> {
-        private T data;
-    }
+
 
 
     /**
@@ -105,6 +112,14 @@ public class MemberApiController {
     }
 
     @Data
+    @AllArgsConstructor
+    static class FindOtherMemberResponse {
+        private String name;
+        private String comment;
+        private int age;
+    }
+
+    @Data
     static class UpdateMemberRequest {
        private String name;
 
@@ -120,8 +135,6 @@ public class MemberApiController {
         private Long id;
         private String name;
     }
-
-
 
     @Data
     static class SignUpMemberRequest {
