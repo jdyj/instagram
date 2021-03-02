@@ -48,7 +48,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     // 이렇게 해도 될련지 모르겠네..
-    // 쿠키 세션 토큰
+    // 쿠키 세션 토큰 @RequestHeader("cookie") String cookie 머 이런식으로 ㅇㅋ? ㅇㅋ
     public Member signIn(String email, String password) {
         List<Member> findMembers = memberRepository.findByEmailAndPassword(email, password);
         if(findMembers.size() == 0) {

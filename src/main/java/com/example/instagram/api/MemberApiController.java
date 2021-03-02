@@ -71,7 +71,7 @@ public class MemberApiController {
 */
     //로그인
     @PostMapping("/signIn/v1/member")
-    public SignInMemberResponse memberSignInV1(@RequestBody @Valid SignInMemberRequest request) {
+    public SignInMemberResponse memberSignInV1(@RequestHeader("cookie") String cookie, @RequestBody @Valid SignInMemberRequest request) {
         Member member = memberService.signIn(request.getEmail(), request.getPassword());
         return new SignInMemberResponse(member.getId());
     }
@@ -87,10 +87,6 @@ public class MemberApiController {
     static class SignInMemberResponse {
         private Long memberId;
     }
-
-
-
-
 
     /**
      * 등록 V2 : 요청 값으로 Member 엔티티 대신 별도의 DTO를 받는다.

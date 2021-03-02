@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -13,7 +14,8 @@ public class Board {
     @Column(name = "board_id")
     private Long id;
 
-    private String context;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "board")
+    private List<Context> context;
 
     private Integer heartCount;
 

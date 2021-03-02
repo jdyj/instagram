@@ -9,9 +9,7 @@ import com.example.instagram.service.MemberServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -28,7 +26,7 @@ public class BoardApiController {
             @RequestBody @Valid CreateBoardRequest request) {
         Board board = new Board();
         board.setHeartCount(request.getHeartCount());
-        board.setContext(request.getContext());
+//        board.setContext(request.getContext());
         board.setMember(memberService.findOne(request.getMemberId()));
         Long boardId = boardService.make(board);
         return new CreateBoardResponse(boardId);
@@ -46,4 +44,20 @@ public class BoardApiController {
         private int heartCount;
         private Long memberId;
     }
+
+//    @PutMapping
+//    public UpdateContextResponse updateContext() {
+//
+//    }
+//
+//    @Data
+//    @AllArgsConstructor
+//    static class UpdateContextResponse {
+//
+//    }
+//
+//    @Data
+//    static class UpdateContextRequest {
+//        private String context
+//    }
 }
