@@ -13,7 +13,7 @@ api 익숙해지기
 쿠키 사용해보기 @RequestHeader("cookie") String cookie
 ```
 
-# 21.03.02
+#### 21.03.02
 ```
 처음 설계할때 게시판에서 댓글다는거를 그냥 String context로 받았는데
 문득 생각해보니 그러면 댓글을 하나밖에 못씀 ^^; 
