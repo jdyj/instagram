@@ -30,7 +30,8 @@ api 익숙해지기
 #### 21.03.03
 ```
 선배님께서 알려주신 @RequestHeader("cookie") String cookie 이거를 사용해서 쿠키 구현을 해보려는데
-자꾸 status 400 뜨면서 Bad Request라고 뜬다.. 찾아보니 RequestHeader랑 ResponseBody랑 같이 사용할수가 없다고 한다.
-RequestHeader ResponseBody등 좀 더 
+자꾸 status 400 뜨면서 Bad Request라고 뜬다.. 
+찾아보니 RequestHeader랑 ResponseBody랑 같이 사용할수가 없다고 한다.
+RequestHeader ResponseBody등 좀 더 공부해야겠다.
 ```
 
