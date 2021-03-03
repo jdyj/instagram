@@ -36,7 +36,6 @@ RequestHeader ResponseBody등 좀 더 공부해야겠다.
 
 ```
 ```java
-어째어째 쿠키 생성이 되는거 같긴하다... 행복하다
     //로그인 (쿠키를 생성한 뒤 httpResponse에 담아서 보내준 코드) (!!코드리뷰 시급!!)
     @PostMapping("/signIn/v1/member")
     public SignInMemberResponse memberSignInV1(@CookieValue(value = "cookie", defaultValue = "defaultcookie") String cookie,
