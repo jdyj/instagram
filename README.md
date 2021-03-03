@@ -33,10 +33,11 @@ api 익숙해지기
 자꾸 status 400 뜨면서 Bad Request라고 뜬다.. 
 찾아보니 RequestHeader랑 ResponseBody랑 같이 사용할수가 없다고 한다.
 RequestHeader ResponseBody등 좀 더 공부해야겠다.
-어째어째 쿠키 생성이 되는거 같긴하다... 행복하다
+
 ```
 ```java
-    //로그인
+어째어째 쿠키 생성이 되는거 같긴하다... 행복하다
+    //로그인 (쿠키를 생성한 뒤 httpResponse에 담아서 보내준 코드) (!!코드리뷰 시급!!)
     @PostMapping("/signIn/v1/member")
     public SignInMemberResponse memberSignInV1(@CookieValue(value = "cookie", defaultValue = "defaultcookie") String cookie,
                                                HttpServletResponse httpResponse,
