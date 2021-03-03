@@ -14,7 +14,7 @@ api 익숙해지기
 ```
 
 #### 21.03.02
-```
+
 처음 설계할때 게시판에서 댓글다는거를 그냥 String context로 받았는데
 문득 생각해보니 그러면 댓글을 하나밖에 못씀 ^^; 
 그래서 따로 Context라는 객체를 만들어서 연관관계 매핑을 시켜줌
@@ -25,16 +25,16 @@ api 익숙해지기
 어렵당
 
 일단 다 때려치우고 천천히 로그인부터 하자
-```
+
 
 #### 21.03.03
-```
+
 선배님께서 알려주신 @RequestHeader("cookie") String cookie 이거를 사용해서 쿠키 구현을 해보려는데
 자꾸 status 400 뜨면서 Bad Request라고 뜬다.. 
 찾아보니 RequestHeader랑 ResponseBody랑 같이 사용할수가 없다고 한다.
 RequestHeader ResponseBody등 좀 더 공부해야겠다.
 
-```
+
 ```java
     //로그인 (쿠키를 생성한 뒤 httpResponse에 담아서 보내준 코드) (!!코드리뷰 시급!!)
     @PostMapping("/signIn/v1/member")
