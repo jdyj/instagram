@@ -35,5 +35,20 @@ api 익숙해지기
 RequestHeader ResponseBody등 좀 더 공부해야겠다.
 어째어째 쿠키 생성이 되는거 같긴하다... 행복하다
 ```
-```
+```java
+    //로그인
+    @PostMapping("/signIn/v1/member")
+    public SignInMemberResponse memberSignInV1(@CookieValue(value = "cookie", defaultValue = "defaultcookie") String cookie,
+                                               HttpServletResponse httpResponse,
+                                               @RequestBody @Valid SignInMemberRequest request) {
+        Member member = memberService.signIn(request.getEmail(), request.getPassword());
+        System.out.println("cookie = " + cookie);
+        Cookie myCookie = new Cookie("cookie", cookie);
+        myCookie.setMaxAge(60*60*24);
+        myCookie.setPath("/");
+
+        httpResponse.addCookie(myCookie);
+        System.out.println("myCookie = " + myCookie);
+        return new SignInMemberResponse(member.getId());
+    }
 ```
