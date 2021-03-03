@@ -29,7 +29,7 @@ public class DemoTest {
 
         memberRepository.save(member);
 
-        board.setContext("안녕하세요");
+//        board.setContext("안녕하세요");
         board.setHeartCount(101);
 
         member.setBoard(board);

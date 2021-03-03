@@ -21,7 +21,7 @@ class BoardRepositoryTest {
     @Transactional
     public void makeBoard() {
         Board board = new Board();
-        board.setContext("감사합니다");
+//        board.setContext("감사합니다");
         board.setHeartCount(5);
         Long saveId = boardRepository.save(board);
         Board findBoard = boardRepository.findOne(saveId);

@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ContextRepository {
 
-    private EntityManager em;
+    private final EntityManager em;
 
     public Long save(Context context) {
         em.persist(context);

@@ -17,7 +17,7 @@ public class Board {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "board")
     private List<Context> context;
 
-    private Integer heartCount;
+    private int heartCount = 0;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

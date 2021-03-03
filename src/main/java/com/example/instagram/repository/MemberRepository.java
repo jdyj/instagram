@@ -34,10 +34,16 @@ public class MemberRepository {
                 .getResultList();
     }
 
-    public List<Member> findByEmailAndPassword(String email, String password) {
+    public Member findByEmailAndPassword(String email, String password) {
         return em.createQuery("select m from Member m where m.email = :email and m.password = :password", Member.class)
                 .setParameter("email", email)
                 .setParameter("password", password)
-                .getResultList();
+                .getSingleResult();
+    }
+
+    public Member findByName(String name) {
+        return em.createQuery("select m from Member m where m.username = :username", Member.class)
+                .setParameter("username", name)
+                .getSingleResult();
     }
 }

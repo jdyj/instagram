@@ -17,5 +17,7 @@ public class Context {
     @JoinColumn(name = "board_id")
     private Board board;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    private Member member;
 
 }

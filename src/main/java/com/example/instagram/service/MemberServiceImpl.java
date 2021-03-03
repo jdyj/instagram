@@ -22,12 +22,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     public Long join(Member member) {
-        validateDuplicateMember(member); // 중복 회원 검증
+        validateDuplicateEmail(member); // 중복 회원 검증
         memberRepository.save(member);
         return member.getId();
     }
 
-    public void validateDuplicateMember(Member member) {
+    public void validateDuplicateEmail(Member member) {
         List<Member> findMembers =
             memberRepository.findByEmail(member.getEmail());
 
@@ -47,14 +47,18 @@ public class MemberServiceImpl implements MemberService {
         return memberRepository.findOne(memberId);
     }
 
+    public Member searchName(String name) {
+        return memberRepository.findByName(name);
+    }
+
     // 이렇게 해도 될련지 모르겠네..
     // 쿠키 세션 토큰 @RequestHeader("cookie") String cookie 머 이런식으로 ㅇㅋ? ㅇㅋ
     public Member signIn(String email, String password) {
-        List<Member> findMembers = memberRepository.findByEmailAndPassword(email, password);
-        if(findMembers.size() == 0) {
+        Member findMembers = memberRepository.findByEmailAndPassword(email, password);
+        if(findMembers == null) {
             throw new IllegalStateException("존재하지 않는 회원입니다");
         }
-        return findMembers.get(0);
+        return findMembers;
     }
 
     @Transactional

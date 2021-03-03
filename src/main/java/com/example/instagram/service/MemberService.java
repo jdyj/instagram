@@ -19,4 +19,6 @@ public interface MemberService {
     void update(Long id, String name);
 
     Member signIn(String email, String password);
+
+    Member searchName(String name);
 }

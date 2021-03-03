@@ -11,7 +11,7 @@ class BoardTest {
     public void 하트증가() throws Exception {
         //given
         Board board = new Board();
-        board.setContext("안녕하세요");
+//        board.setContext("안녕하세요");
         board.setHeartCount(5);
 
         //when
@@ -19,6 +19,16 @@ class BoardTest {
 
         //then
         assertThat(addHeartCount).isEqualTo(6);
+    }
+
+
+    @Test
+    public void 게시판_생성() throws Exception {
+
+        Board board = new Board();
+//        board.setContext("해위");
+        board.setHeartCount(5);
+
     }
 
 }
