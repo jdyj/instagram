@@ -19,6 +19,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,9 +28,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 public class MemberApiController {
-
-
-//    private final PasswordEncoder passwordEncoder;
 
     private final MemberService memberService;
 
@@ -71,36 +70,6 @@ public class MemberApiController {
         return new FindOtherMemberResponse(member.getUsername(), member.getComment(), member.getAge());
     }
 
-
-
-
-
-/*
-    @GetMapping("/api/v1/members")
-    public Result membersV1() {
-        List<Member> findMembers = memberService.findMembers();
-
-        List<MemberDto> collect = findMembers.stream()
-                .map(member -> new MemberDto(member.getUsername(), member.getEmail(), member.getGender(), member.getPassword()))
-                .collect(Collectors.toList());
-        return new Result(collect);
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class MemberDto {
-        private String name;
-        private String email;
-        private Gender gender;
-        private String password;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class Result<T> {
-        private T data;
-    }
-*/
     //로그인
     @PostMapping("/signIn/v1/member")
     public SignInMemberResponse memberSignInV1(@CookieValue(value = "cookie", defaultValue = "defaultcookie") String cookie,
@@ -109,7 +78,7 @@ public class MemberApiController {
         Member member = memberService.signIn(request.getEmail(), request.getPassword());
         System.out.println("cookie = " + cookie);
         Cookie myCookie = new Cookie("cookie", cookie);
-        myCookie.setMaxAge(60*60*24);
+        myCookie.setMaxAge(60*60);
         myCookie.setPath("/");
 
         httpResponse.addCookie(myCookie);
@@ -174,8 +143,5 @@ public class MemberApiController {
         private Long id;
         private String name;
     }
-
-
-
 
 }

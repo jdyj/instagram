@@ -44,6 +44,12 @@ public class BoardApiController {
         private int heartCount;
         private Long memberId;
     }
+
+
+
+
+
+
 //    @PutMapping
 //    public UpdateContextResponse updateContext() {
 //
