@@ -2,6 +2,7 @@ package com.example.instagram.api;
 
 
 import com.example.instagram.domain.Board;
+import com.example.instagram.domain.Member;
 import com.example.instagram.service.BoardService;
 import com.example.instagram.service.BoardServiceImpl;
 import com.example.instagram.service.MemberService;
@@ -12,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,24 +48,18 @@ public class BoardApiController {
         private Long memberId;
     }
 
+    @GetMapping("/myPage/v1/member/{id}/boards")
+    public ShowMyBoardResponse myPageBoard(@PathVariable("id") Long memberId) {
+        Member member = memberService.findOne(memberId);
+        List<Board> findBoards = member.getBoards();
 
+        return new ShowMyBoardResponse(findBoards);
+    }
 
+    @Data
+    @AllArgsConstructor
+    static class ShowMyBoardResponse<T> {
+        private T data;
+    }
 
-
-
-//    @PutMapping
-//    public UpdateContextResponse updateContext() {
-//
-//    }
-//
-//    @Data
-//    @AllArgsConstructor
-//    static class UpdateContextResponse {
-//
-//    }
-//
-//    @Data
-//    static class UpdateContextRequest {
-//        private String context
-//    }
 }

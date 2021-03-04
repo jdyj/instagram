@@ -69,6 +69,15 @@ public class MemberApiController {
         Member member = memberService.searchName(name);
         return new FindOtherMemberResponse(member.getUsername(), member.getComment(), member.getAge());
     }
+    @Data
+    @AllArgsConstructor
+    static class FindOtherMemberResponse {
+        private String name;
+        private String comment;
+        private int age;
+    }
+
+
 
     //로그인
     @PostMapping("/signIn/v1/member")
@@ -111,20 +120,6 @@ public class MemberApiController {
         memberService.update(id,request.getName());
         Member findMember = memberService.findOne(id);
         return new UpdateMemberResponse(findMember.getId(),findMember.getUsername());
-    }
-
-    @Data
-    static class FindOtherMemberRequest {
-        private String name;
-        private int age;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class FindOtherMemberResponse {
-        private String name;
-        private String comment;
-        private int age;
     }
 
     @Data
