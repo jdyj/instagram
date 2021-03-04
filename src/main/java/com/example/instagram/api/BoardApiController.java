@@ -52,14 +52,24 @@ public class BoardApiController {
     public ShowMyBoardResponse myPageBoard(@PathVariable("id") Long memberId) {
         Member member = memberService.findOne(memberId);
         List<Board> findBoards = member.getBoards();
+        List<BoardDto> collect = findBoards.stream()
+                .map(board -> new BoardDto(board.getDescription(), board.getHeartCount()))
+                .collect(Collectors.toList());
 
-        return new ShowMyBoardResponse(findBoards);
+        return new ShowMyBoardResponse(collect);
     }
 
     @Data
     @AllArgsConstructor
     static class ShowMyBoardResponse<T> {
         private T data;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class BoardDto {
+        private String description;
+        private int heartCount;
     }
 
 }

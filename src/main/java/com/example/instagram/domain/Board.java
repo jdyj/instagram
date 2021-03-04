@@ -14,6 +14,8 @@ public class Board {
     @Column(name = "board_id")
     private Long id;
 
+    private String description;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "board")
     private List<Context> context;
 
