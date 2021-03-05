@@ -7,6 +7,9 @@ import com.example.instagram.service.BoardService;
 import com.example.instagram.service.BoardServiceImpl;
 import com.example.instagram.service.MemberService;
 import com.example.instagram.service.MemberServiceImpl;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +27,7 @@ public class BoardApiController {
 
     private final MemberService memberService;
 
+    @ApiOperation(value = "게시판 생성")
     @PostMapping("/api/v2/boards")
     public CreateBoardResponse make(
             @RequestBody @Valid CreateBoardRequest request) {
@@ -48,6 +52,7 @@ public class BoardApiController {
         private Long memberId;
     }
 
+    @ApiOperation(value = "내 게시판 조회")
     @GetMapping("/myPage/v1/member/{id}/boards")
     public ShowMyBoardResponse myPageBoard(@PathVariable("id") Long memberId) {
         Member member = memberService.findOne(memberId);

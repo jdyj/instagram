@@ -5,12 +5,14 @@ import com.example.instagram.domain.Member;
 import com.example.instagram.service.MemberService;
 import com.example.instagram.service.MemberServiceImpl;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EnumType;
@@ -32,8 +34,9 @@ public class MemberApiController {
     private final MemberService memberService;
 
     //회원 가입
+    @ApiOperation(value = "회원 가입")
     @PostMapping("/signUp/v1/member")
-    public SignUpMemberResponse memberSignUpV1(@RequestBody @Valid SignUpMemberRequest request) {
+    public ResponseEntity<SignUpMemberResponse> memberSignUpV1(@RequestBody @Valid SignUpMemberRequest request) {
         Member member = new Member();
         member.setUsername(request.getName());
         member.setAge(request.getAge());
@@ -41,7 +44,7 @@ public class MemberApiController {
         member.setGender(request.getGender());
         member.setPassword(request.getPassword());
         Long id = memberService.join(member);
-        return new SignUpMemberResponse(id);
+        return ResponseEntity.ok().body(new SignUpMemberResponse(id));
     }
 
     @Data
@@ -63,11 +66,11 @@ public class MemberApiController {
     }
 
 
-
+    @ApiOperation(value = "다른 멤버 검색")
     @GetMapping("/find/member/{name}")
-    public FindOtherMemberResponse findOtherMember(@PathVariable("name") String name) {
+    public ResponseEntity<FindOtherMemberResponse> findOtherMember(@PathVariable("name") String name) {
         Member member = memberService.searchName(name);
-        return new FindOtherMemberResponse(member.getUsername(), member.getComment(), member.getAge());
+        return ResponseEntity.ok().body(new FindOtherMemberResponse(member.getUsername(), member.getComment(), member.getAge()));
     }
     @Data
     @AllArgsConstructor
@@ -80,6 +83,7 @@ public class MemberApiController {
 
 
     //로그인
+    @ApiOperation(value = "로그인")
     @PostMapping("/signIn/v1/member")
     public SignInMemberResponse memberSignInV1(@CookieValue(value = "cookie", defaultValue = "defaultcookie") String cookie,
                                                HttpServletResponse httpResponse,
@@ -112,6 +116,7 @@ public class MemberApiController {
     /**
      * 등록 V2 : 요청 값으로 Member 엔티티 대신 별도의 DTO를 받는다.
      */
+    @ApiOperation(value = "멤버 수정")
     @PutMapping("/api/v2/members/{id}")
     public UpdateMemberResponse updateMemberV2(
             @PathVariable("id") Long id,
