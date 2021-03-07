@@ -19,4 +19,8 @@ public class BoardServiceImpl implements BoardService{
         boardRepository.save(board);
         return board.getId();
     }
+
+    public Board findOne(Long boardId) {
+        return boardRepository.findOne(boardId);
+    }
 }

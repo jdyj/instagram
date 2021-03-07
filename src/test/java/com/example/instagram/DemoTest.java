@@ -32,7 +32,7 @@ public class DemoTest {
 //        board.setContext("안녕하세요");
         board.setHeartCount(101);
 
-        member.setBoard(board);
+//        member.setBoard(board);
         boardRepository.save(board);
     }
 }

@@ -34,8 +34,4 @@ public class Member {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
     private List<Board> boards = new ArrayList<>();
 
-    public void setBoard(Board board) {
-        this.boards.add(board);
-        board.setMember(this);
-    }
 }

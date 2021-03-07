@@ -8,4 +8,5 @@ public interface BoardService {
 
     Long make(Board board);
 
+    Board findOne(Long boardId);
 }

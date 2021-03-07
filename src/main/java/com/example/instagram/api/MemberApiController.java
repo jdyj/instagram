@@ -35,7 +35,7 @@ public class MemberApiController {
 
     //회원 가입
     @ApiOperation(value = "회원 가입")
-    @PostMapping("/signUp/v1/member")
+    @PostMapping("/signUp/v1/members")
     public ResponseEntity<SignUpMemberResponse> memberSignUpV1(@RequestBody @Valid SignUpMemberRequest request) {
         Member member = new Member();
         member.setUsername(request.getName());
@@ -67,11 +67,12 @@ public class MemberApiController {
 
 
     @ApiOperation(value = "다른 멤버 검색")
-    @GetMapping("/find/member/{name}")
+    @GetMapping("/find/members/{name}")
     public ResponseEntity<FindOtherMemberResponse> findOtherMember(@PathVariable("name") String name) {
         Member member = memberService.searchName(name);
         return ResponseEntity.ok().body(new FindOtherMemberResponse(member.getUsername(), member.getComment(), member.getAge()));
     }
+
     @Data
     @AllArgsConstructor
     static class FindOtherMemberResponse {
@@ -84,7 +85,7 @@ public class MemberApiController {
 
     //로그인
     @ApiOperation(value = "로그인")
-    @PostMapping("/signIn/v1/member")
+    @PostMapping("/signIn/v1/members")
     public SignInMemberResponse memberSignInV1(@CookieValue(value = "cookie", defaultValue = "defaultcookie") String cookie,
                                                HttpServletResponse httpResponse,
                                                @RequestBody @Valid SignInMemberRequest request) {

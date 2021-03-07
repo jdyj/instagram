@@ -22,15 +22,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Transactional
     public Long join(Member member) {
-        validateDuplicateEmail(member); // 중복 회원 검증
+        validateDuplicateEmailAndName(member); // 중복 회원 검증
         memberRepository.save(member);
         return member.getId();
     }
 
-    public void validateDuplicateEmail(Member member) {
-        List<Member> findMembers =
-            memberRepository.findByEmail(member.getEmail());
-
+    public void validateDuplicateEmailAndName(Member member) {
+        List<Member> findMembers = memberRepository.findByNameOrEmail(member.getUsername(), member.getEmail());
         if(findMembers.size() > 0) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
