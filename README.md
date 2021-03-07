@@ -69,3 +69,8 @@ Member에 있는 Board를 다 출력하는 api를 만들고 있었는데 Member�
         return new ShowMyBoardResponse(collect);
     }
 ```
+
+#### 21.03.07
+
+Context라는 클래스 만들어서 따로 회원, 댓글 저장한 뒤 Board 와 연관시킴.
+FE와 소통 안한지 백만년됨 ㅋ.ㅋ.ㅋ.ㅋ.
