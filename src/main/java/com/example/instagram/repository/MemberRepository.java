@@ -49,6 +49,7 @@ public class MemberRepository {
 
     public List<Member> findByNameOrEmail(String email, String name) {
         return em.createQuery("select m from Member m where m.email = :email or m.username = :username", Member.class)
+                .setParameter("email", email)
                 .setParameter("username", name)
                 .getResultList();
     }
