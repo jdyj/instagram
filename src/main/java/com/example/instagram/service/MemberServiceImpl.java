@@ -19,7 +19,6 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 회원가입
      */
-
     @Transactional
     public Long join(Member member) {
         validateDuplicateEmailAndName(member); // 중복 회원 검증

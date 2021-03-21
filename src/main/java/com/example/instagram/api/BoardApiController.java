@@ -1,8 +1,10 @@
 package com.example.instagram.api;
 
 
+import com.example.instagram.MD5Generator;
 import com.example.instagram.domain.Board;
 import com.example.instagram.domain.Context;
+import com.example.instagram.domain.Image;
 import com.example.instagram.domain.Member;
 import com.example.instagram.service.*;
 import io.swagger.annotations.ApiOperation;
@@ -11,8 +13,13 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,14 +33,50 @@ public class BoardApiController {
 
     private final ContextService contextService;
 
+    private final ImageService imageService;
+
     @ApiOperation(value = "게시판 생성")
     @PostMapping("/api/v2/boards")
     public CreateBoardResponse make(
+            @RequestParam("file") MultipartFile file,
             @RequestBody @Valid CreateBoardRequest request) {
+
         Board board = new Board();
-        board.setHeartCount(request.getHeartCount());
         board.setDescription(request.getDescription());
         board.setMember(memberService.findOne(request.getMemberId()));
+        board.setHeartCount(request.heartCount);
+
+        try {
+            String origFilename = file.getOriginalFilename();
+            String filename = new MD5Generator(origFilename).toString();
+            String savePath = System.getProperty("member.dir") + "\\files";
+
+            if(!new File(savePath).exists()) {
+                try {
+                    new File(savePath).mkdir();
+                }
+                catch(Exception e) {
+                    e.getStackTrace();
+                }
+            }
+            String filePath = savePath + "\\" + filename;
+            file.transferTo(new File(filePath));
+
+            Image image = new Image();
+            image.setOrigFilename(origFilename);
+            image.setFilename(filename);
+            image.setFilePath(filePath);
+
+            Long imageId = imageService.saveFile(image);
+            board.setImageId(imageId);
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Long boardId = boardService.make(board);
         return new CreateBoardResponse(boardId);
     }
@@ -49,6 +92,7 @@ public class BoardApiController {
         private String description;
         private int heartCount;
         private Long memberId;
+        private Long fileId;
     }
 
     @ApiOperation(value = "내 게시판 조회")
@@ -76,6 +120,8 @@ public class BoardApiController {
         private int heartCount;
     }
 
+
+    @ApiOperation(value = "댓글 생성")
     @PostMapping("/api/v1/contexts")
     public ResponseEntity<ContextResponse> makeContextV1(@RequestBody @Valid ContextRequest request) {
 
@@ -100,6 +146,16 @@ public class BoardApiController {
     @Data
     static class ContextResponse {
         private Long contextId;
+    }
+
+    @Data
+    static class FileDto {
+
+        private Long id;
+        private String origFilename;
+        private String filename;
+        private String filePath;
+
     }
 
 

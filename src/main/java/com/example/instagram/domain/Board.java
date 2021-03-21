@@ -21,6 +21,9 @@ public class Board {
 
     private int heartCount = 0;
 
+    private Long ImageId;
+
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
