@@ -21,7 +21,8 @@ public class Board {
 
     private int heartCount = 0;
 
-    private Long ImageId;
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Image> images;
 
 
     @ManyToOne(fetch = FetchType.LAZY)

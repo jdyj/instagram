@@ -6,20 +6,25 @@ import com.example.instagram.domain.Board;
 import com.example.instagram.domain.Context;
 import com.example.instagram.domain.Image;
 import com.example.instagram.domain.Member;
+import com.example.instagram.dto.BoardDto;
 import com.example.instagram.service.*;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,47 +41,45 @@ public class BoardApiController {
     private final ImageService imageService;
 
     @ApiOperation(value = "게시판 생성")
-    @PostMapping("/api/v2/boards")
+    @PostMapping(value = "/api/v2/boards")
     public CreateBoardResponse make(
-            @RequestParam("file") MultipartFile file,
-            @RequestBody @Valid CreateBoardRequest request) {
+            MultipartHttpServletRequest request) throws IOException {
+
+        System.out.println("파일업로드테스트");
+        String heartCount = request.getParameter("heartCount");
+        String memberId = request.getParameter("memberId");
 
         Board board = new Board();
-        board.setDescription(request.getDescription());
-        board.setMember(memberService.findOne(request.getMemberId()));
-        board.setHeartCount(request.heartCount);
+        board.setHeartCount(Integer.parseInt(heartCount));
+        board.setDescription(request.getParameter("description"));
+//        Member member = memberService.findOne(Long.parseLong(memberId));
+//
+//        board.setMember();
 
-        try {
-            String origFilename = file.getOriginalFilename();
-            String filename = new MD5Generator(origFilename).toString();
-            String savePath = System.getProperty("member.dir") + "\\files";
-
-            if(!new File(savePath).exists()) {
-                try {
-                    new File(savePath).mkdir();
-                }
-                catch(Exception e) {
-                    e.getStackTrace();
-                }
-            }
-            String filePath = savePath + "\\" + filename;
-            file.transferTo(new File(filePath));
-
-            Image image = new Image();
-            image.setOrigFilename(origFilename);
-            image.setFilename(filename);
-            image.setFilePath(filePath);
-
-            Long imageId = imageService.saveFile(image);
-            board.setImageId(imageId);
-
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        String path = "C:\\Image";
+        File folder = new File(path);
+        if(!folder.exists()) {
+            folder.mkdir();
+            System.out.println("폴더가 생성되었습니다");
         }
+        List<MultipartFile> files = request.getFiles("files");
+        List<Image> images = new ArrayList<>();
+        for(MultipartFile file : files) {
+            Image image = new Image();
+
+            String originalFileName = file.getOriginalFilename();
+            if(!new File("/Image").exists()) {
+                new File("/Image").mkdirs();
+            }
+            File dest = new File("C:/Image/" + originalFileName);
+            file.transferTo(dest);
+            image.setFilename(originalFileName);
+            image.setOrigFilename(originalFileName);
+            image.setFilePath("/Image");
+            imageService.saveFile(image);
+            images.add(image);
+        }
+        board.setImages(images);
         Long boardId = boardService.make(board);
         return new CreateBoardResponse(boardId);
     }
@@ -87,38 +90,31 @@ public class BoardApiController {
         private Long boardId;
     }
 
-    @Data
-    static class CreateBoardRequest {
-        private String description;
-        private int heartCount;
-        private Long memberId;
-        private Long fileId;
-    }
 
-    @ApiOperation(value = "내 게시판 조회")
-    @GetMapping("/myPage/v1/member/{id}/boards")
-    public ShowMyBoardResponse myPageBoard(@PathVariable("id") Long memberId) {
-        Member member = memberService.findOne(memberId);
-        List<Board> findBoards = member.getBoards();
-        List<BoardDto> collect = findBoards.stream()
-                .map(board -> new BoardDto(board.getDescription(), board.getHeartCount()))
-                .collect(Collectors.toList());
-
-        return new ShowMyBoardResponse(collect);
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class ShowMyBoardResponse<T> {
-        private T data;
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class BoardDto {
-        private String description;
-        private int heartCount;
-    }
+//    @ApiOperation(value = "내 게시판 조회")
+//    @GetMapping("/myPage/v1/member/{id}/boards")
+//    public ShowMyBoardResponse myPageBoard(@PathVariable("id") Long memberId) {
+//        Member member = memberService.findOne(memberId);
+//        List<Board> findBoards = member.getBoards();
+//        List<BoardDto> collect = findBoards.stream()
+//                .map(board -> new BoardDto(board.getDescription(), board.getHeartCount()))
+//                .collect(Collectors.toList());
+//
+//        return new ShowMyBoardResponse(collect);
+//    }
+//
+//    @Data
+//    @AllArgsConstructor
+//    static class ShowMyBoardResponse<T> {
+//        private T data;
+//    }
+//
+//    @Data
+//    @AllArgsConstructor
+//    static class BoardDto {
+//        private String description;
+//        private int heartCount;
+//    }
 
 
     @ApiOperation(value = "댓글 생성")
@@ -150,14 +146,10 @@ public class BoardApiController {
 
     @Data
     static class FileDto {
-
         private Long id;
         private String origFilename;
         private String filename;
         private String filePath;
-
     }
-
-
 
 }
