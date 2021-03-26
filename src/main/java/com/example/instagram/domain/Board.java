@@ -37,6 +37,6 @@ public class Board {
     //==연관관계 메서드==//
     public void setMember(Member member) {
         member.getBoards().add(this);
-        this.setMember(member);
+        this.member = member;
     }
 }

@@ -27,7 +27,7 @@ public class Context {
     //==연결관계 메서드==//
     public void setBoard(Board board) {
         board.getContext().add(this);
-        this.setBoard(board);
+        this.board = board;
     }
 
 }

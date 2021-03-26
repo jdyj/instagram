@@ -1,19 +1,15 @@
 package com.example.instagram.api;
 
 
-import com.example.instagram.MD5Generator;
 import com.example.instagram.domain.Board;
 import com.example.instagram.domain.Context;
 import com.example.instagram.domain.Image;
 import com.example.instagram.domain.Member;
-import com.example.instagram.dto.BoardDto;
 import com.example.instagram.service.*;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,8 +18,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -52,9 +46,8 @@ public class BoardApiController {
         Board board = new Board();
         board.setHeartCount(Integer.parseInt(heartCount));
         board.setDescription(request.getParameter("description"));
-//        Member member = memberService.findOne(Long.parseLong(memberId));
-//
-//        board.setMember();
+        Member member = memberService.findOne(Long.parseLong(memberId));
+        board.setMember(member);
 
         String path = "C:\\Image";
         File folder = new File(path);
@@ -65,6 +58,7 @@ public class BoardApiController {
         List<MultipartFile> files = request.getFiles("files");
         List<Image> images = new ArrayList<>();
         for(MultipartFile file : files) {
+
             Image image = new Image();
 
             String originalFileName = file.getOriginalFilename();
@@ -78,10 +72,13 @@ public class BoardApiController {
             image.setFilePath("/Image");
             imageService.saveFile(image);
             images.add(image);
+
         }
+
         board.setImages(images);
         Long boardId = boardService.make(board);
         return new CreateBoardResponse(boardId);
+
     }
 
     @Data
