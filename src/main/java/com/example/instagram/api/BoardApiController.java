@@ -74,11 +74,9 @@ public class BoardApiController {
             images.add(image);
 
         }
-
         board.setImages(images);
         Long boardId = boardService.make(board);
         return new CreateBoardResponse(boardId);
-
     }
 
     @Data
@@ -87,32 +85,32 @@ public class BoardApiController {
         private Long boardId;
     }
 
+    @ApiOperation(value = "내 게시판 조회")
+    @GetMapping("/myPage/v1/member/{id}/boards")
+    public ShowMyBoardResponse myPageBoard(@PathVariable("id") Long memberId) {
+        Member member = memberService.findOne(memberId);
+        List<Board> findBoards = boardService.findMyBoards(member);
+        List<BoardDto> collect = findBoards.stream()
+                .map(board -> new BoardDto(board.getId(), board.getImages(), board.getDescription(), board.getHeartCount()))
+                .collect(Collectors.toList());
 
-//    @ApiOperation(value = "내 게시판 조회")
-//    @GetMapping("/myPage/v1/member/{id}/boards")
-//    public ShowMyBoardResponse myPageBoard(@PathVariable("id") Long memberId) {
-//        Member member = memberService.findOne(memberId);
-//        List<Board> findBoards = member.getBoards();
-//        List<BoardDto> collect = findBoards.stream()
-//                .map(board -> new BoardDto(board.getDescription(), board.getHeartCount()))
-//                .collect(Collectors.toList());
-//
-//        return new ShowMyBoardResponse(collect);
-//    }
-//
-//    @Data
-//    @AllArgsConstructor
-//    static class ShowMyBoardResponse<T> {
-//        private T data;
-//    }
-//
-//    @Data
-//    @AllArgsConstructor
-//    static class BoardDto {
-//        private String description;
-//        private int heartCount;
-//    }
+        return new ShowMyBoardResponse(collect);
+    }
 
+    @Data
+    @AllArgsConstructor
+    static class ShowMyBoardResponse<T> {
+        private T data;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class BoardDto {
+        private Long boardId;
+        private List<Image> image;
+        private String description;
+        private int heartCount;
+    }
 
     @ApiOperation(value = "댓글 생성")
     @PostMapping("/api/v1/contexts")
@@ -140,13 +138,4 @@ public class BoardApiController {
     static class ContextResponse {
         private Long contextId;
     }
-
-    @Data
-    static class FileDto {
-        private Long id;
-        private String origFilename;
-        private String filename;
-        private String filePath;
-    }
-
 }
