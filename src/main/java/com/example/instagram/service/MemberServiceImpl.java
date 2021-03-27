@@ -62,4 +62,14 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findOne(id);
         member.setUsername(name);
     }
+
+    @Transactional
+    public void follow(Long myId, String findName) {
+        Member member = memberRepository.findOne(myId);
+        Member findMember = memberRepository.findByName(findName);
+
+        member.getFollowings().add(findMember);
+        findMember.getFollowers().add(member);
+    }
+
 }

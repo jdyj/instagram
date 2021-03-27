@@ -142,4 +142,14 @@ public class MemberApiController {
         private String name;
     }
 
+    @ApiOperation(value = "팔로우하기")
+    @PostMapping("/follow/api/members/{id}")
+    public void followMemberV1(@PathVariable("id") Long id, FollowMemberRequest request) {
+        memberService.follow(id,request.getFindName());
+    }
+
+    @Data
+    static class FollowMemberRequest {
+        private String findName;
+    }
 }

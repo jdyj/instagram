@@ -18,6 +18,8 @@ public interface MemberService {
 
     void update(Long id, String name);
 
+    void follow(Long id, String findName);
+
     Member signIn(String email, String password);
 
     Member searchName(String name);

@@ -1,12 +1,9 @@
 package com.example.instagram.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.persistence.criteria.Fetch;
-import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,5 +30,11 @@ public class Member {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
     private List<Board> boards = new ArrayList<>();
+
+    @OneToMany
+    private List<Member> followers = new ArrayList<>();
+
+    @OneToMany
+    private List<Member> followings = new ArrayList<>();
 
 }

@@ -6,6 +6,7 @@ import com.example.instagram.domain.Context;
 import com.example.instagram.domain.Image;
 import com.example.instagram.domain.Member;
 import com.example.instagram.service.*;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -84,6 +85,28 @@ public class BoardApiController {
     static class CreateBoardResponse {
         private Long boardId;
     }
+
+    @ApiOperation(value = "피드 조회")
+    @GetMapping("/api/v1/member/{id}/boards")
+    public Result friendBoard(@PathVariable("id") Long memberId) {
+        Member member = memberService.findOne(memberId);
+        List<Member> followingMembers = member.getFollowings();
+        List<BoardDto> collect = null;
+        for (Member followingMember : followingMembers) {
+            List<Board> followingBoards = boardService.findMyBoards(followingMember);
+            collect = followingBoards.stream()
+                    .map(board -> new BoardDto(board.getId(), board.getImages(), board.getDescription(), board.getHeartCount()))
+                    .collect(Collectors.toList());
+        }
+        return new Result(collect);
+    }
+
+    @AllArgsConstructor
+    static class Result<T> {
+        private T data;
+
+    }
+
 
     @ApiOperation(value = "내 게시판 조회")
     @GetMapping("/myPage/v1/member/{id}/boards")
