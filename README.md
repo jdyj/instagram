@@ -3,7 +3,7 @@
 
 #### with FE 0균씨 https://github.com/klmyoungyun
 
-### 기술 스택 SPRING BOOT, JPA
+### 기술 스택 SPRING BOOT, JPA, H2
 
 ## 공부 목표 랄까
 ```
