@@ -38,5 +38,6 @@ public class Board {
     public void setMember(Member member) {
         member.getBoards().add(this);
         this.member = member;
+        addHeartCount();
     }
 }
