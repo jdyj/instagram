@@ -19,6 +19,11 @@ spring:
 #        show_sql:
         format_sql: true
 
+  security:
+    user:
+      name: user
+      password: test
+
 logging.level:
 #  org.hibernate.SQL: debug
   org.hibernate.type : trace
