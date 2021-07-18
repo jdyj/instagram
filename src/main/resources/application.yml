@@ -19,6 +19,7 @@ spring:
 #        show_sql:
         format_sql: true
 
+
   security:
     user:
       name: user

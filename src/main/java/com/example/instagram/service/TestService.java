@@ -49,6 +49,7 @@ public class TestService {
             while ((line = br.readLine()) != null) {
                 result += line;
             }
+
             System.out.println("response body : " + result);
 
             //Gson 라이브러리에 포함된 클래스로 JSON파싱 객체 생성
@@ -64,8 +65,6 @@ public class TestService {
             br.close();
             bw.close();
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

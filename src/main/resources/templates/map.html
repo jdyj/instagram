@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script th:src="@{https://polyfill.io/v3/polyfill.min.js?features=default}"></script>
+    <link rel="stylesheet"th:href="@{/css/index.js}" />
+    <script type="text/javascript" th:src="@{/js/index.js}"></script>
+</head>
+<body>
+
+<script
+        th:src="@{https://maps.googleapis.com/maps/api/js?key=}+${API_KEY}+@{&callback=initMap&libraries=&v=weekly}"
+        async></script>
+</body>
+</html>
